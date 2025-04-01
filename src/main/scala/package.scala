@@ -16,30 +16,36 @@ package object ManiobrasTrenes {
     m match {
       case Uno(n) => n match {
         case n if n > 0 =>
-          if (n >= principal.length) (Nil, uno ++ principal, dos)
+          if (n >= principal.length) (Nil, principal++uno, dos)
           else {
-            val (restarElementos, mover) = principal.splitAt(principal.length - n)
-            (restarElementos, uno ++ mover, dos)
+            val mover = principal.takeRight(n)
+            val restarElementos = principal.dropRight(n)
+            (restarElementos, mover++uno, dos)
           }
         case n if n < 0 =>
           if (-n >= uno.length) (principal ++ uno, Nil, dos)
           else {
-            val (mover, restarElementos) = uno.splitAt(-n)
+            val mover = uno.takeRight(-n)
+            val restarElementos = uno.dropRight(-n)
             (principal ++ mover, restarElementos, dos)
           }
         case _ => e
       }
       case Dos(n) => n match {
         case n if n > 0 =>
-          if (n >= principal.length) (Nil, uno, dos ++ principal)
+          if (n >= principal.length) (Nil, uno,principal++dos)
           else {
-            val (restarElementos, mover) = principal.splitAt(principal.length - n)
-            (restarElementos, uno, dos ++ mover)
+            val mover = principal.take(n)
+            val restarElementos = principal.dropRight(n)
+            (restarElementos, uno, dos++mover)
           }
         case n if n < 0 =>
-          if (-n >= dos.length) (principal ++ dos, uno, Nil)
+          if (-n >= dos.length) {
+            (principal ++ dos, uno, Nil)
+          }
           else {
-            val (mover, restarElementos) = dos.splitAt(-n)
+            val mover = dos.take(-n)
+            val restarElementos = dos.drop(-n)
             (principal ++ mover, uno, restarElementos)
           }
         case _ => e
@@ -47,9 +53,10 @@ package object ManiobrasTrenes {
     }
   }
 
-  def aplicarMovimientos(e: Estado, movs: Maniobra ) : List [Estado] = {
+  def aplicarMovimientos(e: Estado, movs: Maniobra): List[Estado] = {
     movs.foldLeft(List(e))((acc, m) => acc :+ aplicarMovimiento(acc.last, m))
   }
+
 
   def definirManiobra(t1: Tren, t2: Tren): Maniobra = {
     def moverVagones(tren: Tren, destino: Tren, maniobra: Maniobra): Maniobra = {
