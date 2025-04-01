@@ -12,59 +12,38 @@ package object ManiobrasTrenes {
   type Maniobra = List[Movimiento]
 
   def aplicarMovimiento(e: Estado, m: Movimiento): Estado = {
+    val (principal, uno, dos) = e
     m match {
-      case Uno(n) =>
-        if (n > 0) {
-          val (principal, uno, dos) = e
-          if (n>=principal.length) {
-            (Nil,uno++principal,dos)
-          } else {
-            val mover = principal.takeRight(n)
-            val restarElementos = principal.dropRight(n)
-
-            (restarElementos, uno++mover, dos)
+      case Uno(n) => n match {
+        case n if n > 0 =>
+          if (n >= principal.length) (Nil, uno ++ principal, dos)
+          else {
+            val (restarElementos, mover) = principal.splitAt(principal.length - n)
+            (restarElementos, uno ++ mover, dos)
           }
-
-        } else if (n < 0) {
-          val (principal, uno, dos) = e
-          if (-n>=uno.length) {
-            (principal++uno,Nil,dos)
-          } else {
-            val mover = uno.take(-n)
-            val restarElementos = uno.drop(-n)
-
-            (principal++mover, restarElementos, dos)
+        case n if n < 0 =>
+          if (-n >= uno.length) (principal ++ uno, Nil, dos)
+          else {
+            val (mover, restarElementos) = uno.splitAt(-n)
+            (principal ++ mover, restarElementos, dos)
           }
-
-        } else {
-          e
-        }
-      case Dos(n) =>
-        if (n > 0) {
-          val (principal, uno, dos) = e
-          if (n>=principal.length) {
-            (Nil,uno,dos++principal)
-          } else {
-            val mover = principal.takeRight(n)
-            val restarElementos = principal.dropRight(n)
-
-            (restarElementos, uno, dos++mover)
+        case _ => e
+      }
+      case Dos(n) => n match {
+        case n if n > 0 =>
+          if (n >= principal.length) (Nil, uno, dos ++ principal)
+          else {
+            val (restarElementos, mover) = principal.splitAt(principal.length - n)
+            (restarElementos, uno, dos ++ mover)
           }
-
-        } else if (n < 0) {
-          val (principal, uno, dos) = e
-          if (-n>=dos.length) {
-            (principal++dos,uno,Nil)
-          } else {
-            val mover = dos.take(-n)
-            val restarElementos = dos.drop(-n)
-
-            (principal++mover, uno, restarElementos)
+        case n if n < 0 =>
+          if (-n >= dos.length) (principal ++ dos, uno, Nil)
+          else {
+            val (mover, restarElementos) = dos.splitAt(-n)
+            (principal ++ mover, uno, restarElementos)
           }
-
-        } else {
-          e
-        }
+        case _ => e
+      }
     }
   }
 
