@@ -1,3 +1,5 @@
+import scala.language.postfixOps
+
 package object ManiobrasTrenes {
   type Vagon = Any
   type Tren = List[Vagon]
@@ -35,7 +37,8 @@ package object ManiobrasTrenes {
         case n if n > 0 =>
           if (n >= principal.length) (Nil, uno,principal++dos)
           else {
-            val mover = principal.take(n)
+            val mover = principal.takeRight(n)
+            println(mover)
             val restarElementos = principal.dropRight(n)
             (restarElementos, uno, dos++mover)
           }
@@ -54,28 +57,47 @@ package object ManiobrasTrenes {
   }
 
   def aplicarMovimientos(e: Estado, movs: Maniobra): List[Estado] = {
-    movs.foldLeft(List(e))((acc, m) => acc :+ aplicarMovimiento(acc.last, m))
+    movs.foldLeft(List(e))((acc, m) => acc ++ List(aplicarMovimiento(acc.last, m)))
   }
-
 
   def definirManiobra(t1: Tren, t2: Tren): Maniobra = {
-    def moverVagones(tren: Tren, destino: Tren, maniobra: Maniobra): Maniobra = {
-      if (tren.isEmpty) maniobra
-      else {
-        val vagon = tren.head
-        val resto = tren.tail
-        val (movs, nuevoDestino) = destino.span(_ != vagon)
-        val movimientos = if (movs.isEmpty) {
-          List(Uno(1), Dos(1), Uno(-1), Dos(-1))
-        } else {
-          List(Uno(movs.length + 1), Uno(-movs.length))
-        }
-        moverVagones(resto, nuevoDestino, maniobra ++ movimientos)
-      }
-    }
 
-    val maniobraInicial = List(Uno(t1.length))
-    val maniobraFinal = moverVagones(t1.reverse, t2.reverse, List())
-    maniobraInicial ++ maniobraFinal
+    def realizarMovimiento(estado: Estado, movimientos: Maniobra, objetivo: Tren): Maniobra = estado match {
+      case (Nil, Nil, Nil) => movimientos
+
+      case (primerVagon :: restoVagones, Nil, Nil) => {
+        if (primerVagon == objetivo.head)
+          realizarMovimiento((restoVagones, Nil, Nil), movimientos, objetivo.tail)
+        else {
+          val vagonesParaMover = estado._1.dropWhile(_ != objetivo.head)
+          realizarMovimiento(
+            aplicarMovimiento(estado, Uno(vagonesParaMover.length)),
+            movimientos :+ Uno(vagonesParaMover.length),
+            objetivo
+          )
+        }
+      }
+      case (pila1Top :: pila1Rest, pila2Top :: pila2Rest, Nil) =>
+        realizarMovimiento(
+          aplicarMovimiento(estado, Dos(estado._1.length)),
+          movimientos :+ Dos(estado._1.length),
+          objetivo
+        )
+      case (Nil, pila2Top :: pila2Rest, pila3Top :: pila3Rest) =>
+        realizarMovimiento(
+          aplicarMovimiento(estado, Uno(-estado._2.length)),
+          movimientos :+ Uno(-estado._2.length),
+          objetivo
+        )
+      case (pila1Top :: pila1Rest, Nil, pila3Top :: pila3Rest) =>
+        realizarMovimiento(
+          aplicarMovimiento(estado, Dos(-estado._3.length)),
+          movimientos :+ Dos(-estado._3.length),
+          objetivo
+        )
+    }
+    realizarMovimiento((t1, Nil, Nil), Nil, t2)
   }
+
+
 }
