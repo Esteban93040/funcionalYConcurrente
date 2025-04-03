@@ -1,5 +1,3 @@
-import scala.language.postfixOps
-
 package object ManiobrasTrenes {
   type Vagon = Any
   type Tren = List[Vagon]
@@ -57,7 +55,7 @@ package object ManiobrasTrenes {
 
   def aplicarMovimientos(e: Estado, movs: Maniobra): List[Estado] = {
     movs.foldLeft(List(e))((acc, m) => acc ++ List(aplicarMovimiento(acc.last, m)))
-g  }
+  }
 
   def definirManiobra(t1: Tren, t2: Tren): Maniobra = {
 
