@@ -27,8 +27,8 @@ package object ManiobrasTrenes {
         case n if n < 0 =>
           if (-n >= uno.length) (principal ++ uno, Nil, dos)
           else {
-            val mover = uno.takeRight(-n)
-            val restarElementos = uno.dropRight(-n)
+            val mover = uno.take(-n)
+            val restarElementos = uno.drop(-n)
             (principal ++ mover, restarElementos, dos)
           }
         case _ => e
@@ -38,7 +38,6 @@ package object ManiobrasTrenes {
           if (n >= principal.length) (Nil, uno,principal++dos)
           else {
             val mover = principal.takeRight(n)
-            println(mover)
             val restarElementos = principal.dropRight(n)
             (restarElementos, uno, dos++mover)
           }
@@ -58,7 +57,7 @@ package object ManiobrasTrenes {
 
   def aplicarMovimientos(e: Estado, movs: Maniobra): List[Estado] = {
     movs.foldLeft(List(e))((acc, m) => acc ++ List(aplicarMovimiento(acc.last, m)))
-  }
+g  }
 
   def definirManiobra(t1: Tren, t2: Tren): Maniobra = {
 
