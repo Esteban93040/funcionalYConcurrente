@@ -48,6 +48,8 @@ val esperado3=List ('b','a')
 val esperado4=List ('6','4','5','3','1','2')
 val esperado5=List ('a')
 
+//Casos de prueba aplicar movimientos
+
 print("Casos de prueba para la función aplicar movimientos")
 val am1= aplicarMovimientos(e1prueba1, List(Uno(1), Dos(2), Uno(-1), Dos(-2), Uno(1), Dos(1), Uno(-1), Dos(-1)))
 val am2 = aplicarMovimientos(e1prueba2, List(Uno(2), Dos(2), Uno(-1), Dos(-1)))
@@ -55,6 +57,7 @@ val am3 = aplicarMovimientos(e1prueba3, List(Uno(-3), Dos(2)))
 val am4 = aplicarMovimientos(e1prueba4, List(Uno(3), Dos(2), Uno(-1), Dos(-2)))
 val am5 = aplicarMovimientos(e1prueba5, List(Uno(10), Uno(-10)))
 
+//Casos de prueba para definir maniobras
 
 print("Casos de prueba para la función definirManiobra")
 val dm1 = definirManiobra(vdado1,esperado1)
