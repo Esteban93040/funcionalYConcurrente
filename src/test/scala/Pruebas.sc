@@ -14,10 +14,10 @@ val e8prueba1 = aplicarMovimiento(e7prueba1,Uno(-1))
 val e9prueba1 = aplicarMovimiento(e8prueba1,Dos(-1))
 
 val e1prueba2 = (List(1, 2, 3, 4), List(5, 6), List(7, 8, 9))
-val e2prueba2 = aplicarMovimiento(e1prueba2, Uno(2))   
-val e3prueba2 = aplicarMovimiento(e2prueba2, Dos(2))   
-val e4prueba2 = aplicarMovimiento(e3prueba2, Uno(-1))  
-val e5prueba2 = aplicarMovimiento(e4prueba2, Dos(-1))  
+val e2prueba2 = aplicarMovimiento(e1prueba2, Uno(2))
+val e3prueba2 = aplicarMovimiento(e2prueba2, Dos(2))
+val e4prueba2 = aplicarMovimiento(e3prueba2, Uno(-1))
+val e5prueba2 = aplicarMovimiento(e4prueba2, Dos(-1))
 
 
 val e1prueba3 = (List(2, 3), List(4, 5, 6, 7), List(8, 9))
@@ -26,10 +26,10 @@ val e3prueba3 = aplicarMovimiento(e2prueba3, Dos(2))
 
 
 val e1prueba4 = (List(1, 2, 3, 4, 5), List(), List(6, 7))
-val e2prueba4 = aplicarMovimiento(e1prueba4, Uno(3))  
-val e3prueba4 = aplicarMovimiento(e2prueba4, Dos(2))  
-val e4prueba4 = aplicarMovimiento(e3prueba4, Uno(-1)) 
-val e5prueba4 = aplicarMovimiento(e4prueba4, Dos(-2)) 
+val e2prueba4 = aplicarMovimiento(e1prueba4, Uno(3))
+val e3prueba4 = aplicarMovimiento(e2prueba4, Dos(2))
+val e4prueba4 = aplicarMovimiento(e3prueba4, Uno(-1))
+val e5prueba4 = aplicarMovimiento(e4prueba4, Dos(-2))
 
 
 val e1prueba5 = (List(11, 12, 13), List(9), List(3, 4))
@@ -48,7 +48,15 @@ val esperado3=List ('b','a')
 val esperado4=List ('6','4','5','3','1','2')
 val esperado5=List ('a')
 
-//Casos de prueba para la función definirManiobra
+print("Casos de prueba para la función aplicar movimientos")
+val am1= aplicarMovimientos(e1prueba1, List(Uno(1), Dos(2), Uno(-1), Dos(-2), Uno(1), Dos(1), Uno(-1), Dos(-1)))
+val am2 = aplicarMovimientos(e1prueba2, List(Uno(2), Dos(2), Uno(-1), Dos(-1)))
+val am3 = aplicarMovimientos(e1prueba3, List(Uno(-3), Dos(2)))
+val am4 = aplicarMovimientos(e1prueba4, List(Uno(3), Dos(2), Uno(-1), Dos(-2)))
+val am5 = aplicarMovimientos(e1prueba5, List(Uno(10), Uno(-10)))
+
+
+print("Casos de prueba para la función definirManiobra")
 val dm1 = definirManiobra(vdado1,esperado1)
 val dm2 = definirManiobra(vdado2,esperado2)
 val dm3 = definirManiobra(vdado3,esperado3)
